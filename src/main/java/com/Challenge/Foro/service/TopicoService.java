@@ -1,22 +1,16 @@
 package com.Challenge.Foro.service;
 
-import com.Challenge.Foro.model.Curso;
 import com.Challenge.Foro.model.Topico;
-import com.Challenge.Foro.repository.TopicoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-public class TopicoService {
+import java.util.List;
+import java.util.Optional;
 
-    @Autowired
-    private final TopicoRepository topicoRepository;
-    
-
-    public TopicoService(TopicoRepository topicoRepository) {
-        this.topicoRepository = topicoRepository;
-    }
-
-    public void crearTopico(EntradaTopico entradaTopico) {
-        var topico = new Topico(entradaTopico.titulo(), entradaTopico.mensaje(), entradaTopico.autor(),new Curso(entradaTopico.curso().nombre(), entradaTopico.curso().categoria();
-        topicoRepository.save(topico);
-    }
-}
+public interface TopicoService {
+    Topico crearTopico(String titulo, String mensaje, String autor, String cursoId);
+    Page<Topico> listarTopicos(Pageable pageable);
+    Optional<Topico> obtenerTopicoPorId(String id);
+    Topico actualizarTopico(String id, String titulo, String mensaje, String autor, String cursoId);
+    void eliminarTopico(String id);
+} 

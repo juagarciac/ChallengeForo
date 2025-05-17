@@ -1,11 +1,12 @@
 package com.Challenge.Foro.repository;
 
 import com.Challenge.Foro.model.Usuario;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    UserDetails findByNombre(String username);
+@Repository
+public interface UsuarioRepository extends MongoRepository<Usuario, String> {
+    Optional<Usuario> findByNombre(String username);
+    Optional<Usuario> findByCorreoElectronico(String correoElectronico);
 }

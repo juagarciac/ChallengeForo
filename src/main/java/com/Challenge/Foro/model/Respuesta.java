@@ -1,21 +1,23 @@
 package com.Challenge.Foro.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-@Entity
+@Document(collection = "respuestas")
 public class Respuesta {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+    private String id;
     private String mensaje;
-    @ManyToOne
+    
+    @DBRef
     private Topico topico;
-    @Column(nullable = false)
+    
     private String fechaCreacion;
-    @ManyToOne
+    
+    @DBRef
     private Usuario autor;
-    @Column(nullable = false)
+    
     private String solucion;
 
     public Respuesta() {
@@ -29,11 +31,11 @@ public class Respuesta {
         this.solucion = solucion;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -76,5 +78,4 @@ public class Respuesta {
     public void setAutor(Usuario autor) {
         this.autor = autor;
     }
-
 }

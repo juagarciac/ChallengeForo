@@ -1,43 +1,43 @@
 package com.Challenge.Foro.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.ArrayList;
 import java.util.List;
-@Table(name = "usuarios")
-@Entity
+
+@Document(collection = "usuarios")
 public class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+    private String id;
     private String nombre;
-    @Column(nullable = false)
     private String correoElectronico;
-    @Column(nullable = false)
     private String contrasena;
-    @Enumerated(EnumType.STRING)
     private Perfil perfil;
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Topico> topicos;
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Respuesta> respuestas;
-
+    
+    @DBRef
+    private List<Topico> topicos = new ArrayList<>();
+    
+    @DBRef
+    private List<Respuesta> respuestas = new ArrayList<>();
 
     public Usuario() {
     }
+
     public Usuario(String nombre, String contrasena, String correoElectronico, List<Topico> topicos, List<Respuesta> respuestas) {
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.correoElectronico = correoElectronico;
-        this.topicos = topicos;
-        this.respuestas = respuestas;
+        this.topicos = new ArrayList<>();
+        this.respuestas = new ArrayList<>();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -63,6 +63,14 @@ public class Usuario {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 
     public List<Topico> getTopicos() {

@@ -1,21 +1,21 @@
 package com.Challenge.Foro.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.ArrayList;
 import java.util.List;
-@Entity
+
+@Document(collection = "cursos")
 public class Curso {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+    private String id;
     private String nombre;
-    @Column(nullable = false)
     private String categoria;
-    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private ArrayList<Topico> topicos =new ArrayList<Topico>() {
-    };
+
+    @DBRef
+    private List<Topico> topicos = new ArrayList<>();
 
     public Curso() {
     }
@@ -23,13 +23,14 @@ public class Curso {
     public Curso(String nombre, String categoria) {
         this.nombre = nombre;
         this.categoria = categoria;
+        this.topicos = new ArrayList<>();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -53,7 +54,7 @@ public class Curso {
         return topicos;
     }
 
-    public void setTopicos(ArrayList<Topico> topicos) {
+    public void setTopicos(List<Topico> topicos) {
         this.topicos = topicos;
     }
 }

@@ -1,48 +1,46 @@
 package com.Challenge.Foro.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-@Entity
+
+@Document(collection = "topicos")
 public class Topico {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+    private String id;
     private String titulo;
-    @Column(nullable = false)
     private String mensaje;
-    @Column(nullable = false)
-    private String fechaCreacion;
-    @Column()
+    private LocalDateTime fechaCreacion;
     private String status;
-    @ManyToOne
     private String autor;
-    @ManyToOne
+    
+    @DBRef
     private Curso curso;
-    @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Respuesta> respuestas;
+    
+    private List<Respuesta> respuestas = new ArrayList<>();
 
     public Topico() {
     }
 
-    public Topico( String titulo, String mensaje, String autor, Curso curso) {
+    public Topico(String titulo, String mensaje, String autor, Curso curso) {
         this.titulo = titulo;
         this.mensaje = mensaje;
-        Instant tiempoEspecifico = Instant.now(); // Ejemplo: 1 de enero de 2023
-        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Define un formato de fecha
-        this.fechaCreacion = formateador.format(tiempoEspecifico);;
+        this.fechaCreacion = LocalDateTime.now();
         this.autor = autor;
         this.curso = curso;
+        this.respuestas = new ArrayList<>();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -62,11 +60,11 @@ public class Topico {
         this.mensaje = mensaje;
     }
 
-    public String getFechaCreacion() {
+    public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(String fechaCreacion) {
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -100,5 +98,10 @@ public class Topico {
 
     public void setRespuestas(List<Respuesta> respuestas) {
         this.respuestas = respuestas;
+    }
+
+    public String getFechaFormateada() {
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return fechaCreacion.format(formateador);
     }
 }
